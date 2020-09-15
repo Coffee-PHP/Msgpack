@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace CoffeePhp\Msgpack\Integration;
 
-
 use CoffeePhp\ComponentRegistry\Contract\ComponentRegistrarInterface;
 use CoffeePhp\Di\Contract\ContainerInterface;
 use CoffeePhp\Edi\Contract\EdiArrayTranslatorInterface;
@@ -51,14 +50,14 @@ final class MsgpackComponentRegistrar implements ComponentRegistrarInterface
      */
     public function register(ContainerInterface $di): void
     {
-        if (!(
-            $di->has(SerializerInterface::class) &&
-            $di->has(UnserializerInterface::class) &&
-            $di->has(EdiArrayTranslatorInterface::class) &&
-            $di->has(EdiExtendedArrayTranslatorInterface::class) &&
-            $di->has(EdiObjectTranslatorInterface::class) &&
-            $di->has(EdiTranslatorInterface::class)
-        )) {
+        if (
+            !$di->has(SerializerInterface::class) ||
+            !$di->has(UnserializerInterface::class) ||
+            !$di->has(EdiArrayTranslatorInterface::class) ||
+            !$di->has(EdiExtendedArrayTranslatorInterface::class) ||
+            !$di->has(EdiObjectTranslatorInterface::class) ||
+            !$di->has(EdiTranslatorInterface::class)
+        ) {
             $di->bind(SerializerInterface::class, MsgpackTranslatorInterface::class);
             $di->bind(UnserializerInterface::class, MsgpackTranslatorInterface::class);
 

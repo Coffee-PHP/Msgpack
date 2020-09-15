@@ -1,68 +1,85 @@
 {
-	"name": "coffeephp/msgpack",
-	"description": "Provides classes for handling Msgpack data.",
-	"license": "Apache-2.0",
-	"authors": [
-		{
-			"name": "Danny Damsky",
-			"email": "dannydamsky99@gmail.com"
-		}
-	],
-	"keywords": [
-		"coffeephp",
-		"coffee",
-		"php",
-		"serialized",
-		"php-serialized",
-		"binary",
-		"msgpack",
-		"translator",
-		"serialize",
-		"unserialize",
-		"deserialize",
-		"serialization",
-		"unserialization",
-		"deserialization"
-	],
-	"require": {
-		"php": ">=7.4",
-		"ext-apcu": "*",
-		"ext-msgpack": "*",
-		"coffeephp/edi": "1.*"
-	},
-	"require-dev": {
-		"roave/security-advisories": "dev-master",
-		"coffeephp/component-registry": "1.*",
-		"coffeephp/binary": "1.*",
-		"phpunit/phpunit": "9.*"
-	},
-	"autoload": {
-		"psr-4": {
-			"CoffeePhp\\Msgpack\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"CoffeePhp\\Msgpack\\Test\\Integration\\": "test/Integration/",
-			"CoffeePhp\\Msgpack\\Test\\Unit\\": "test/Unit/"
-		}
-	},
-	"suggest": {
-		"coffeephp/component-registry": "For integration of the component with the CoffeePHP framework.",
-		"coffeephp/binary": "For the serializer interfaces to be bound to the PHP-serialized implementation."
-	},
-	"config": {
-		"sort-packages": true,
-		"optimize-autoloader": true,
-		"apcu-autoloader": true
-	},
-	"extra": {
-		"coffeephp": {
-			"registry": [
-				{
-					"registrar": "CoffeePhp\\Msgpack\\Integration\\MsgpackComponentRegistrar"
-				}
-			]
-		}
-	}
+    "name": "coffeephp/msgpack",
+    "description": "Provides classes for handling Msgpack data.",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Danny Damsky",
+            "email": "dannydamsky99@gmail.com"
+        }
+    ],
+    "keywords": [
+        "coffeephp",
+        "coffee",
+        "php",
+        "serialized",
+        "php-serialized",
+        "binary",
+        "msgpack",
+        "translator",
+        "serialize",
+        "unserialize",
+        "deserialize",
+        "serialization",
+        "unserialization",
+        "deserialization"
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-apcu": "*",
+        "ext-msgpack": "*",
+        "coffeephp/edi": "1.*"
+    },
+    "require-dev": {
+        "coffeephp/binary": "1.*",
+        "coffeephp/component-registry": "1.*",
+        "coffeephp/quality-tools": "1.*",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoffeePhp\\Msgpack\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoffeePhp\\Msgpack\\Test\\Integration\\": "test/Integration/",
+            "CoffeePhp\\Msgpack\\Test\\Unit\\": "test/Unit/"
+        }
+    },
+    "suggest": {
+        "coffeephp/binary": "For the serializer interfaces to be bound to the PHP-serialized implementation.",
+        "coffeephp/component-registry": "For integration of the component with the CoffeePHP framework."
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "apcu-autoloader": true
+    },
+    "extra": {
+        "coffeephp": {
+            "registry": [
+                {
+                    "registrar": "CoffeePhp\\Msgpack\\Integration\\MsgpackComponentRegistrar"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "coffeephp:exec:phpcbf": "coffeephp_exec_phpcbf",
+        "coffeephp:exec:phpcs": "coffeephp_exec_phpcs",
+        "coffeephp:exec:phpmd": "coffeephp_exec_phpmd",
+        "coffeephp:exec:phpstan-analyse": "coffeephp_exec_phpstan_analyse",
+        "coffeephp:exec:phpunit": "coffeephp_exec_phpunit --testsuite unit,integration",
+        "coffeephp:exec:psalm": "coffeephp_exec_psalm",
+        "coffeephp:exec:psalm-alter": "coffeephp_exec_psalm_alter",
+        "coffeephp:exec:publish": "coffeephp_exec_publish",
+        "coffeephp:exec:analyse": [
+            "@coffeephp:exec:phpunit",
+            "@coffeephp:exec:psalm",
+            "@coffeephp:exec:phpcs",
+            "@coffeephp:exec:phpstan-analyse",
+            "@coffeephp:exec:phpmd"
+        ]
+    }
 }

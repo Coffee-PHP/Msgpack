@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace CoffeePhp\Msgpack;
 
-
 use CoffeePhp\Binary\Exception\BinaryUnserializeException;
 use CoffeePhp\Msgpack\Contract\MsgpackTranslatorInterface;
 use CoffeePhp\Msgpack\Exception\MsgpackSerializeException;
@@ -53,6 +52,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
     public function serializeArray(array $array): string
     {
         try {
+            /** @var mixed|string $serialized */
             $serialized = msgpack_pack($array);
             if (!is_string($serialized)) {
                 throw new MsgpackSerializeException(
@@ -65,7 +65,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
         } catch (Throwable $e) {
             throw new MsgpackSerializeException(
                 "Failed to serialize data: {$e->getMessage()}",
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }
@@ -77,6 +77,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
     public function unserializeArray(string $string): array
     {
         try {
+            /** @var mixed|array $unserialized */
             $unserialized = msgpack_unpack($string);
             if (!is_array($unserialized)) {
                 throw new MsgpackUnserializeException(
@@ -89,7 +90,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
         } catch (Throwable $e) {
             throw new MsgpackUnserializeException(
                 "Failed to unserialize string: $string ; Error: {$e->getMessage()}",
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }
@@ -101,6 +102,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
     public function serializeObject(object $class): string
     {
         try {
+            /** @var mixed|string $serialized */
             $serialized = msgpack_pack($class);
             if (!is_string($serialized)) {
                 $className = get_class($class);
@@ -115,7 +117,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
             $className = get_class($class);
             throw new MsgpackSerializeException(
                 "Failed to serialize class: $className ; Error: {$e->getMessage()}",
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }
@@ -127,6 +129,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
     public function unserializeObject(string $string): object
     {
         try {
+            /** @var mixed|object $unserialized */
             $unserialized = msgpack_unpack($string);
             if (!is_object($unserialized)) {
                 throw new MsgpackUnserializeException(
@@ -139,7 +142,7 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
         } catch (Throwable $e) {
             throw new BinaryUnserializeException(
                 "Failed to unserialize string: $string ; Error: {$e->getMessage()}",
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }
