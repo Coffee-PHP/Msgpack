@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace CoffeePhp\Msgpack\Exception;
 
-
 use CoffeePhp\Serialize\Exception\SerializeException;
 
 /**

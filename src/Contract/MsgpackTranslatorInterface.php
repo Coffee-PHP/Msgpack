@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace CoffeePhp\Msgpack\Contract;
 
-
 use CoffeePhp\Edi\Contract\EdiTranslatorInterface;
 
 /**
