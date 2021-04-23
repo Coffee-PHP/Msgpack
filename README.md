@@ -1,5 +1,7 @@
 # Coffee PHP - Msgpack
 
+![Build](https://github.com/Coffee-PHP/Msgpack/workflows/Build/badge.svg)
+
 Provides classes for handling Msgpack data.
 
 ```

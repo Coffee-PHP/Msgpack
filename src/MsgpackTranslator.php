@@ -25,15 +25,11 @@ declare(strict_types=1);
 
 namespace CoffeePhp\Msgpack;
 
-use CoffeePhp\Binary\Exception\BinaryUnserializeException;
 use CoffeePhp\Msgpack\Contract\MsgpackTranslatorInterface;
 use CoffeePhp\Msgpack\Exception\MsgpackSerializeException;
 use CoffeePhp\Msgpack\Exception\MsgpackUnserializeException;
 use Throwable;
 
-use function get_class;
-use function is_array;
-use function is_string;
 use function msgpack_pack;
 use function msgpack_unpack;
 
@@ -48,26 +44,14 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
 
     /**
      * @inheritDoc
+     * @psalm-suppress MixedReturnType, MixedInferredReturnType, MixedReturnStatement
      */
     public function serializeArray(array $array): string
     {
         try {
-            /** @var mixed|string $serialized */
-            $serialized = msgpack_pack($array);
-            if (!is_string($serialized)) {
-                throw new MsgpackSerializeException(
-                    'Data returned from array is not a msgpack string.'
-                );
-            }
-            return $serialized;
-        } catch (MsgpackSerializeException $e) {
-            throw $e;
+            return msgpack_pack($array);
         } catch (Throwable $e) {
-            throw new MsgpackSerializeException(
-                "Failed to serialize data: {$e->getMessage()}",
-                (int)$e->getCode(),
-                $e
-            );
+            throw new MsgpackSerializeException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 
@@ -77,49 +61,22 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
     public function unserializeArray(string $string): array
     {
         try {
-            /** @var mixed|array $unserialized */
-            $unserialized = msgpack_unpack($string);
-            if (!is_array($unserialized)) {
-                throw new MsgpackUnserializeException(
-                    "Data returned from msgpack string is not an array ; String: $string"
-                );
-            }
-            return $unserialized;
-        } catch (MsgpackUnserializeException $e) {
-            throw $e;
+            return (array)msgpack_unpack($string);
         } catch (Throwable $e) {
-            throw new MsgpackUnserializeException(
-                "Failed to unserialize string: $string ; Error: {$e->getMessage()}",
-                (int)$e->getCode(),
-                $e
-            );
+            throw new MsgpackUnserializeException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 
     /**
      * @inheritDoc
+     * @psalm-suppress MixedReturnType, MixedInferredReturnType, MixedReturnStatement
      */
-    public function serializeObject(object $class): string
+    public function serializeObject(object $object): string
     {
         try {
-            /** @var mixed|string $serialized */
-            $serialized = msgpack_pack($class);
-            if (!is_string($serialized)) {
-                $className = get_class($class);
-                throw new MsgpackSerializeException(
-                    "Data returned from class is not a binary string: $className"
-                );
-            }
-            return $serialized;
-        } catch (MsgpackSerializeException $e) {
-            throw $e;
+            return msgpack_pack($object);
         } catch (Throwable $e) {
-            $className = get_class($class);
-            throw new MsgpackSerializeException(
-                "Failed to serialize class: $className ; Error: {$e->getMessage()}",
-                (int)$e->getCode(),
-                $e
-            );
+            throw new MsgpackSerializeException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 
@@ -129,22 +86,9 @@ final class MsgpackTranslator implements MsgpackTranslatorInterface
     public function unserializeObject(string $string): object
     {
         try {
-            /** @var mixed|object $unserialized */
-            $unserialized = msgpack_unpack($string);
-            if (!is_object($unserialized)) {
-                throw new MsgpackUnserializeException(
-                    "Data returned from msgpack string failed to unserialize into an object: $string"
-                );
-            }
-            return $unserialized;
-        } catch (BinaryUnserializeException $e) {
-            throw $e;
+            return (object)msgpack_unpack($string);
         } catch (Throwable $e) {
-            throw new BinaryUnserializeException(
-                "Failed to unserialize string: $string ; Error: {$e->getMessage()}",
-                (int)$e->getCode(),
-                $e
-            );
+            throw new MsgpackUnserializeException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 }

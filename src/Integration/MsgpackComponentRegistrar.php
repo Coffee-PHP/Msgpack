@@ -27,14 +27,8 @@ namespace CoffeePhp\Msgpack\Integration;
 
 use CoffeePhp\ComponentRegistry\Contract\ComponentRegistrarInterface;
 use CoffeePhp\Di\Contract\ContainerInterface;
-use CoffeePhp\Edi\Contract\EdiArrayTranslatorInterface;
-use CoffeePhp\Edi\Contract\EdiExtendedArrayTranslatorInterface;
-use CoffeePhp\Edi\Contract\EdiObjectTranslatorInterface;
-use CoffeePhp\Edi\Contract\EdiTranslatorInterface;
 use CoffeePhp\Msgpack\Contract\MsgpackTranslatorInterface;
 use CoffeePhp\Msgpack\MsgpackTranslator;
-use CoffeePhp\Serialize\Contract\SerializerInterface;
-use CoffeePhp\Unserialize\Contract\UnserializerInterface;
 
 /**
  * Class MsgpackComponentRegistrar
@@ -44,30 +38,19 @@ use CoffeePhp\Unserialize\Contract\UnserializerInterface;
  */
 final class MsgpackComponentRegistrar implements ComponentRegistrarInterface
 {
+    /**
+     * MsgpackComponentRegistrar constructor.
+     */
+    public function __construct(private ContainerInterface $di)
+    {
+    }
 
     /**
      * @inheritDoc
      */
-    public function register(ContainerInterface $di): void
+    public function register(): void
     {
-        if (
-            !$di->has(SerializerInterface::class) ||
-            !$di->has(UnserializerInterface::class) ||
-            !$di->has(EdiArrayTranslatorInterface::class) ||
-            !$di->has(EdiExtendedArrayTranslatorInterface::class) ||
-            !$di->has(EdiObjectTranslatorInterface::class) ||
-            !$di->has(EdiTranslatorInterface::class)
-        ) {
-            $di->bind(SerializerInterface::class, MsgpackTranslatorInterface::class);
-            $di->bind(UnserializerInterface::class, MsgpackTranslatorInterface::class);
-
-            $di->bind(EdiArrayTranslatorInterface::class, MsgpackTranslatorInterface::class);
-            $di->bind(EdiExtendedArrayTranslatorInterface::class, MsgpackTranslatorInterface::class);
-            $di->bind(EdiObjectTranslatorInterface::class, MsgpackTranslatorInterface::class);
-            $di->bind(EdiTranslatorInterface::class, MsgpackTranslatorInterface::class);
-        }
-
-        $di->bind(MsgpackTranslatorInterface::class, MsgpackTranslator::class);
-        $di->bind(MsgpackTranslator::class, MsgpackTranslator::class);
+        $this->di->bind(MsgpackTranslatorInterface::class, MsgpackTranslator::class);
+        $this->di->bind(MsgpackTranslator::class, MsgpackTranslator::class);
     }
 }
